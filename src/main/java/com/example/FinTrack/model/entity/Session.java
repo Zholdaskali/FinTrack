@@ -53,4 +53,8 @@ public class Session {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expiration);
+    }
 }

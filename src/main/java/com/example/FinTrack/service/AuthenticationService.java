@@ -22,7 +22,9 @@ public class AuthenticationService {
         if(userService.existsByUsername(userName)) {
             return "Пользователь уже существует";
         } else {
-            return userService.createUser(userName, passwordEncoder.hash(password));
+            User user = new User(userName, passwordEncoder.hash(password));
+            userService.saveUser(user);
+            return "Пользователь успешно создан";
         }
     }
 
@@ -32,6 +34,7 @@ public class AuthenticationService {
             String passwordMatches = user.getPassword();
             Long userId = user.getId();
             if(passwordEncoder.check(password, passwordMatches)) {
+                sessionService.manageCountSession(userId);
                 return sessionService.generateForUser(userId);
             } else {
                 return "Неправильный пароль";

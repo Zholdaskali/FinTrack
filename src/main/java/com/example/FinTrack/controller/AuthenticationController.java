@@ -1,16 +1,14 @@
 package com.example.FinTrack.controller;
 
-import com.example.FinTrack.model.request.LogOutRequest;
 import com.example.FinTrack.model.request.RegisterRequest;
 import com.example.FinTrack.model.response.MessageResponse;
 import com.example.FinTrack.service.AuthenticationService;
-import org.aspectj.weaver.patterns.IToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
@@ -29,8 +27,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-    public MessageResponse<Boolean> logout(@RequestBody LogOutRequest logOutRequest) {
-        String token = logOutRequest.getToken();
+    public MessageResponse<Boolean> logout(@RequestParam String token) {
         return MessageResponse.of(authenticationService.logout(token));
     }
 }
