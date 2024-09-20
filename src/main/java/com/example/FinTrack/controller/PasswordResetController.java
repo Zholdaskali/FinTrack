@@ -1,13 +1,11 @@
 package com.example.FinTrack.controller;
 
-import com.example.FinTrack.model.entity.User;
 import com.example.FinTrack.model.request.PasswordResetRequest;
 import com.example.FinTrack.model.response.MessageResponse;
 import com.example.FinTrack.service.PasswordResetService;
 import com.example.FinTrack.service.SessionService;
 import com.example.FinTrack.service.UserService;
 import com.example.FinTrack.util.encoder.PasswordEncoder;
-import org.hibernate.annotations.AttributeAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

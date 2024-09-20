@@ -1,7 +1,9 @@
 package com.example.FinTrack.service;
 
+import com.example.FinTrack.exception.AuthenticationErrorException;
+import com.example.FinTrack.exception.InvalidPasswordException;
+import com.example.FinTrack.exception.UserAlreadyExistsException;
 import com.example.FinTrack.model.entity.User;
-import com.example.FinTrack.model.response.MessageResponse;
 import com.example.FinTrack.util.encoder.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,7 @@ public class AuthenticationService {
 
     public String register(String userName, String password) {
         if(userService.existsByUsername(userName)) {
-            return "Пользователь уже существует";
+            throw new UserAlreadyExistsException();
         } else {
             User user = new User(userName, passwordEncoder.hash(password));
             userService.saveUser(user);
@@ -37,14 +39,14 @@ public class AuthenticationService {
                 sessionService.manageCountSession(userId);
                 return sessionService.generateForUser(userId);
             } else {
-                return "Неправильный пароль";
+                throw new InvalidPasswordException();
             }
         } else {
-            return "Ошибка аутентификации";
+            throw new AuthenticationErrorException();
         }
     }
 
-    public boolean logout(String token) {
+    public boolean logout(String token)  {
         return sessionService.invalidate(token);
     }
 }

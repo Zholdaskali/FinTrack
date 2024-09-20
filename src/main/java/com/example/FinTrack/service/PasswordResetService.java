@@ -1,8 +1,8 @@
 package com.example.FinTrack.service;
 
+import com.example.FinTrack.exception.SessionHasExpiredException;
 import com.example.FinTrack.model.entity.User;
 import com.example.FinTrack.model.request.PasswordResetRequest;
-import com.example.FinTrack.model.response.MessageResponse;
 import com.example.FinTrack.util.encoder.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,6 @@ public class PasswordResetService {
             sessionService.invalidate(passwordResetRequest.getToken());
             return "Пароль успешно изменен";
         }
-        return "токен истек";
+        throw new SessionHasExpiredException();
     }
 }

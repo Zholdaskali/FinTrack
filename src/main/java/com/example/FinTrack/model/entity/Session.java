@@ -1,7 +1,6 @@
 package com.example.FinTrack.model.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity

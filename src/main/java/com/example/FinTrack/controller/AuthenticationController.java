@@ -26,6 +26,7 @@ public class AuthenticationController {
         return MessageResponse.empty(authenticationService.login(registerRequest.getUserName(), registerRequest.getPassword()));
     }
 
+    //выход
     @PostMapping("/logout")
     public MessageResponse<Boolean> logout(@RequestParam String token) {
         return MessageResponse.of(authenticationService.logout(token));

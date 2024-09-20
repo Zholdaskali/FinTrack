@@ -1,5 +1,6 @@
 package com.example.FinTrack.service;
 
+import com.example.FinTrack.exception.SessionNotFoundException;
 import com.example.FinTrack.model.entity.Session;
 import com.example.FinTrack.model.entity.User;
 import com.example.FinTrack.repository.SessionRepository;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SessionService {
@@ -31,12 +33,20 @@ public class SessionService {
     }
 
     public boolean checkSession(String token) {
-        return sessionRepository.findByToken(token) != null;
+        Optional <Session> sessionCheck = sessionRepository.findByToken(token);
+        if (sessionCheck.isPresent()) {
+            return true;
+        } else {
+            throw new SessionNotFoundException();
+        }
     }
+
     public User getTokenForUser(String token) {
-        Session session = sessionRepository.findByToken(token);
-        return session != null ? session.getUser() : null;
+        Optional<Session> session = sessionRepository.findByToken(token);
+        return session.map(Session::getUser)
+                .orElseThrow(SessionNotFoundException::new);
     }
+
 
     @Transactional
     public boolean invalidate(String token) {
